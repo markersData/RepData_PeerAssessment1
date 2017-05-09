@@ -7,19 +7,55 @@ output:
 
 
 ## Loading and preprocessing the data
+First, read the data.
+```{r}
+if (!file.exists("./activity.csv")) {
+    unzip("./activity.zip")
+}
+activity <- read.csv("./activity.csv")
+```
+#activity[is.na(activity)] <- 0
 
 
-
-## What is mean total number of steps taken per day?
-
+## What is the mean total number of steps taken per day?
 
 
+```{r}
+totalSteps <- aggregate(steps ~ date, data=activity, sum)
+
+hist(totalSteps$steps, xlab="Total Steps per Day", main="Steps per Day", col="skyblue",breaks=20, xlim=c(0,24250))
+meanTotalSteps <- mean(totalSteps$steps, na.rm=TRUE)
+medianTotalSteps <- median(totalSteps$steps, na.rm=TRUE)
+abline(v=medianTotalSteps, col="red")
+abline(v=meanTotalSteps, col="darkblue")
+legend("topright",c(paste("mean  ",round(meanTotalSteps)),paste("median ", round(medianTotalSteps))), col=c("darkblue","red"),lwd=1)
+```
+```{r, echo=FALSE}
+print(paste ("The (rounded) mean total number of steps taken each day is", round(meanTotalSteps), "and the median is", round(medianTotalSteps)))
+```
 ## What is the average daily activity pattern?
 
-
+Average the number of steps taken in each time interval over all the days of the study.
+```{r}
+meanStepsPerInt <- aggregate(steps ~ interval, data=activity, mean)
+maxMean = max(meanStepsPerInt$steps)
+maxInt = meanStepsPerInt[meanStepsPerInt$steps == maxMean,]$interval
+plot(x=meanStepsPerInt$interval, y=meanStepsPerInt$steps, xlab="5 minute intervals", ylab="Avg Steps", type="l")
+```
+```{r, echo=FALSE}
+print(paste ("Maximum average steps occur at Interval", maxInt))
+```
 
 ## Imputing missing values
+```{r}
+nas <- is.na(activity)
+yesNAs <- subset(activity, is.na(activity$steps))
+print(paste("There are", nrow(yesNAs),"NA values in the data."))
 
-
+SchoolData$Grade[is.na(SchoolData$Grade)] <- "Missing Grade"
+x[is.na(x)] =median(x, na.rm=TRUE)
+activity$steps[is.na(activity$steps)] <- mean(activity$steps, na.rm=TRUE)
+```
+Fill in the missing values with the mean for that interval from other days.
 
 ## Are there differences in activity patterns between weekdays and weekends?
