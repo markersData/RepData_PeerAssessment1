@@ -107,8 +107,8 @@ weekday <- subset(newActivity, !(weekdays(as.Date(newActivity$date)) %in% c("Sat
 
 par(mfrow=c(2,1))
 par(family = 'sans')
-plot(x=weekend$interval, y=weekend$steps, xlab="5 minute intervals", ylab="Avg Steps", type="l", col="skyblue", main="Weekend")
-plot(x=weekday$interval, y=weekday$steps, xlab="5 minute intervals", ylab="Avg Steps", type="l", col="skyblue", main="WeekDay")
+plot(x=weekend$interval, y=weekend$steps, xlab="5 minute intervals", ylab="Avg Steps", type="l", col="skyblue", main="Weekend Days")
+plot(x=weekday$interval, y=weekday$steps, xlab="5 minute intervals", ylab="Avg Steps", type="l", col="skyblue", main="Week Days")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
